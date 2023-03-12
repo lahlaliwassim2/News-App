@@ -1,10 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+//@ts-nocheck
+
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Appbar, Button, Chip, useTheme } from "react-native-paper";
-const categories = ["Technologie", "Sport", "Politics", "Health", "Buisnes"];
+import { Item } from "react-native-paper/lib/typescript/src/components/Drawer/Drawer";
+import CardItem from "../components/CardItem";
+import { NewsData } from "../utils/type";
+const categories = ["entertainment", "Sport", "Politics", "Health", "business"];
 const API_KEY = "pub_187635d956506d548fdfafd33df7fe91981ef";
 const Home = () => {
-  const theme = useTheme()
+  const [newsData, setnewsData] = useState<NewsData[]>([])
   const [selectedCategories, setselectedCategories] = useState([]);
   const handelSelect = (val: string) => {
     setselectedCategories((prev: string[]) =>
@@ -16,10 +21,16 @@ const Home = () => {
   const handelPress = async()=>{
     const URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=ma&language=fr${selectedCategories.length > 0 ? `&category=${selectedCategories.join()}  `: ""
   }`
-   console.log(URL);
-   
-    
+   try {
+    await fetch(URL)
+    .then((res)=>res.json())
+    .then((data)=>setnewsData(data.results)
+    )
+   } catch (error) {
+    console.log(error)
+   }
   }
+  
   return (
     <View style={styles.container}>
       <Appbar.Header>
@@ -49,6 +60,12 @@ const Home = () => {
           Refresh
         </Button>
       </View>
+      <FlatList  style={styles.flatList}  data={newsData} renderItem={({item})=> 
+      <CardItem 
+      category={item.category}  
+      content={item.content}
+      image_url={item.image_url}
+      />}/>
     </View>
   );
 };
@@ -73,4 +90,8 @@ const styles = StyleSheet.create({
     padding: 0,
     maxHeight: 400,
   },
+  flatList: {
+    flex:   1,
+    height: "auto"
+  }
 });
