@@ -14,7 +14,7 @@ const Home = () => {
     );
   };
   const handelPress = async()=>{
-    const URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=ma&language=fr&${selectedCategories.length > 0 && `category=${selectedCategories.join()}`
+    const URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=ma&language=fr${selectedCategories.length > 0 ? `&category=${selectedCategories.join()}  `: ""
   }`
    console.log(URL);
    
