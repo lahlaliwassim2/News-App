@@ -62,7 +62,8 @@ const Home = () => {
       </View>
       <FlatList  style={styles.flatList}  data={newsData} renderItem={({item})=> 
       <CardItem 
-      category={item.category}  
+      title={item.title}  
+      category={item.category} 
       content={item.content}
       image_url={item.image_url}
       />}/>
