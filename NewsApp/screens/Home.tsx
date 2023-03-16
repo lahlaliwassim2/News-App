@@ -19,7 +19,7 @@ const Home = () => {
     );
   };
   const handelPress = async()=>{
-    const URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=ma&language=fr&${selectedCategories.length > 0 && `category=${selectedCategories.join()}`
+    const URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=ma&language=fr${selectedCategories.length > 0 ? `&category=${selectedCategories.join()}  `: ""
   }`
    try {
     await fetch(URL)
@@ -62,7 +62,8 @@ const Home = () => {
       </View>
       <FlatList  style={styles.flatList}  data={newsData} renderItem={({item})=> 
       <CardItem 
-      category={item.category}  
+      title={item.title}  
+      category={item.category} 
       content={item.content}
       image_url={item.image_url}
       />}/>
